@@ -26,7 +26,7 @@ type googleUser struct {
 	Hd            string `json:"hd"`
 }
 
-func getGoogleOauthUrl() (*oauth2.Config, string) {
+func getGoogleOauthUrl() *oauth2.Config {
 	option := CreateClientOption("google", "")
 
 	googleUrl := &oauth2.Config{
@@ -40,12 +40,12 @@ func getGoogleOauthUrl() (*oauth2.Config, string) {
 		Endpoint: google.Endpoint,
 	}
 
-	return googleUrl, ""
+	return googleUrl
 }
 
 func GoogleOauthLogin(ctx *gin.Context) {
-	config, state := getGoogleOauthUrl()
-	redirect_uri := config.AuthCodeURL(state)
+	config := getGoogleOauthUrl()
+	redirect_uri := config.AuthCodeURL("")
 
 	ctx.Redirect(http.StatusSeeOther, redirect_uri)
 }
