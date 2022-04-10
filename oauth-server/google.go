@@ -3,8 +3,8 @@ package oauthserver
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/oauth2"
@@ -27,7 +27,7 @@ type googleUser struct {
 }
 
 func getGoogleOauthUrl() *oauth2.Config {
-	option := CreateClientOption("google", "")
+	option := CreateClientOption("google", "https://www.google.com.tw/?hl=zh_TW")
 
 	googleUrl := &oauth2.Config{
 		ClientID:     option.clientID,
@@ -47,15 +47,22 @@ func GoogleOauthLogin(ctx *gin.Context) {
 	config := getGoogleOauthUrl()
 	redirect_uri := config.AuthCodeURL("")
 
-	ctx.Redirect(http.StatusSeeOther, redirect_uri)
+	ctx.JSON(200, map[string]string{"url": redirect_uri})
 }
 
 func GoogleCallBack(ctx *gin.Context) {
 	code := ctx.Query("code")
-	token, _ := google_config.Exchange(ctx, code)
+	fmt.Println(code)
+	token, err := google_config.Exchange(ctx, code)
+	fmt.Println(token)
+
+	if err != nil {
+		panic(err)
+	}
 
 	client := google_config.Client(context.TODO(), token)
 	userInfo, err := client.Get("https://www.googleapis.com/oauth2/v3/userinfo")
+
 	if err != nil {
 		ctx.AbortWithError(500, err)
 	}
