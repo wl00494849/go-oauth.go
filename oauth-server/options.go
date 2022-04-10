@@ -25,3 +25,11 @@ func CreateClientOption(company, redirectUrl string) *ClientOption {
 		redirectUrl:  redirectUrl,
 	}
 }
+
+func (option *ClientOption) SetRedirectUrl(url string) {
+	option.redirectUrl = url
+}
+
+func (option *ClientOption) GetRedirectUrl() string {
+	return option.redirectUrl
+}
