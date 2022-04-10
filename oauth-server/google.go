@@ -28,7 +28,7 @@ type googleUser struct {
 
 func getGoogleOauthUrl() *oauth2.Config {
 
-	//redirect：https://zhung-oauth2-test.herokuapp.com
+	//redirect：https://zhung-oauth2-test.herokuapp.com/callback/google
 	option := CreateClientOption("google", "https://www.google.com.tw/?hl=zh_TW")
 
 	googleUrl := &oauth2.Config{
