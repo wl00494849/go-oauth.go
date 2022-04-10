@@ -1,6 +1,10 @@
 package oauthserver
 
-import "os"
+import (
+	"os"
+
+	"github.com/rs/xid"
+)
 
 type ClientOption struct {
 	clientID     string
@@ -32,4 +36,8 @@ func (option *ClientOption) SetRedirectUrl(url string) {
 
 func (option *ClientOption) GetRedirectUrl() string {
 	return option.redirectUrl
+}
+
+func GenerateID() string {
+	return xid.New().String()
 }
